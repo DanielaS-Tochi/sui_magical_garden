@@ -25,13 +25,13 @@ Estructura del proyecto 📂
 text
 sui_magical_garden/
 ├── sources/
-│   └── garden.move      # Código principal
+│   └── sui_magical_garden.move      # Código principal
 └── Move.toml             # Configuración
 Instalación y ejecución 🚀
 Clonar repositorio:
 
 bash
-git clone https://github.com/tu-usuario/sui_magical_garden.git
+git clone https://github.com/danielas-tochi/sui_magical_garden.git
 cd sui_magical_garden
 Compilar el proyecto:
 
@@ -123,4 +123,3 @@ for i in {1..5}; do
   --package <PACKAGE_ID> \
   --args "Planta $i" $((RANDOM % 6)) $((RANDOM % 2)) \
   --gas-budget 10000000
-done
