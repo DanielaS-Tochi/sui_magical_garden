@@ -159,74 +159,71 @@ module sui_magical_garden::garden {
 
     // ===== ENTRY POINTS =====
 
-    /// 🌱 Crear planta (entry point)
-    #[allow(lint(self_transfer))] // Suprimir advertencia de transferencia
-    public fun create_plant_entry(
-        name: vector<u8>,
-        magic_type: u8,
-        is_rare: bool,
+/// 🌱 Crear nueva planta (entry point público)
+    #[allow(lint(self_transfer))]
+public entry fun create_plant_entry(
+    name: vector<u8>,
+    magic_type: u8, // 0=Fuego, 1=Agua, 2=Tierra, 3=Aire, 4=Luz, otro=Sombra
+    is_rare: bool,
+    ctx: &mut TxContext
+) {
+    let magic = if (magic_type == 0) MagicType::Fire
+        else if (magic_type == 1) MagicType::Water
+        else if (magic_type == 2) MagicType::Earth
+        else if (magic_type == 3) MagicType::Air
+        else if (magic_type == 4) MagicType::Light
+        else MagicType::Shadow;
+    
+    let plant = create_plant(string::utf8(name), magic, is_rare, ctx);
+    transfer::public_transfer(plant, tx_context::sender(ctx));
+}
+
+    /// 💧 Regar planta (entry point público)
+    public entry fun water_plant_entry(
+        plant: &mut Plant,  // Planta a regar (debe ser mutable)
+        ctx: &mut TxContext // Contexto para obtener timestamp
+    ) {
+        water_plant(plant, tx_context::epoch_timestamp_ms(ctx));
+    }
+
+    /// 🍂 Verificar y marchitar planta si es necesario
+    public entry fun wither_plant_entry(
+        plant: &mut Plant,
         ctx: &mut TxContext
     ) {
-        let magic = match (magic_type) {
-            0 => MagicType::Fire,
-            1 => MagicType::Water,
-            2 => MagicType::Earth,
-            3 => MagicType::Air,
-            4 => MagicType::Light,
-            _ => MagicType::Shadow
-        };
-        let plant = create_plant(
-            string::utf8(name),
-            magic,
-            is_rare,
-            ctx
-        );
-        transfer::public_transfer(plant, tx_context::sender(ctx));
+        wither_plant(plant, tx_context::epoch_timestamp_ms(ctx));
     }
 
-    /// 💧 Regar planta (entry point)
-    public fun water_plant_entry(
-        plant: &mut Plant,
-        current_time: u64,
-    ) {
-        water_plant(plant, current_time);
-    }
-
-    /// 🍂 Marchitar planta (entry point)
-    public fun wither_plant_entry(
-        plant: &mut Plant,
-        current_time: u64,
-    ) {
-        wither_plant(plant, current_time);
-    }
-
-    /// ✨ Revelar secreto (entry point)
-    public fun reveal_secret_entry(
+    /// ✨ Revelar mensaje secreto (entry point público)
+    public entry fun reveal_secret_entry(
         plant: &Plant
     ): string::String {
         reveal_secret(plant)
     }
 
-    /// 🔄 Transferir planta (entry point)
-    public fun transfer_plant_entry(
-        plant: Plant,
-        recipient: address,
+    /// 🔄 Transferir planta a otro usuario (con validación de propiedad)
+    public entry fun transfer_plant_entry(
+        plant: Plant,         // Planta a transferir
+        recipient: address,   // Address destino
+        ctx: &mut TxContext   // Contexto para validar sender
     ) {
-        transfer_plant(plant, recipient);
+        assert!(plant.gardener == tx_context::sender(ctx), 0);
+        transfer::public_transfer(plant, recipient);
     }
 
-    // ===== MOVE REGISTRY =====
+    // ========== MOVE REGISTRY ==========
 
-    /// 🏁 Inicializar módulo (función especial)
+    /// 🏁 Inicializar módulo (se ejecuta al deploy)
     fun init(ctx: &mut TxContext) {
         let metadata = GardenMetadata {
             id: object::new(ctx),
             name: string::utf8(b"Magical Garden"),
-            version: string::utf8(b"1.0"),
-            description: string::utf8(b"Jardin magico con plantas elementales")
+            version: string::utf8(b"1.0.0"),
+            description: string::utf8(b"Jardín mágico con plantas elementales que crecen y revelan secretos")
         };
-        transfer::share_object(metadata);
+        transfer::share_object(metadata); // Hacer metadatos públicos
     }
+
 
     #[test_only]
     use sui::test_scenario;
