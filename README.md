@@ -1,4 +1,5 @@
-🌿 Magical Garden en Sui - Proyecto Backend
+🌿 Magical Garden en Sui 
+
 Un jardín mágico donde las plantas cobran vida con propiedades únicas basadas en elementos naturales. Cada planta evoluciona a través de diferentes etapas y revela mensajes secretos al florecer.
 
 Características principales ✨
@@ -27,12 +28,14 @@ sui_magical_garden/
 ├── sources/
 │   └── sui_magical_garden.move      # Código principal
 └── Move.toml             # Configuración
+
 Instalación y ejecución 🚀
 Clonar repositorio:
 
 bash
 git clone https://github.com/danielas-tochi/sui_magical_garden.git
 cd sui_magical_garden
+
 Compilar el proyecto:
 
 bash
@@ -41,6 +44,7 @@ Ejecutar pruebas:
 
 bash
 sui move test
+
 Comandos para probar desde terminal 🧪
 Crear una planta:
 
@@ -50,6 +54,7 @@ sui client call --function create_plant_entry \
 --package <PACKAGE_ID> \
 --args "Mi Planta" 0 true \  # Nombre, tipo (0=Fuego), rareza
 --gas-budget 10000000
+
 Regar una planta:
 
 bash
@@ -58,6 +63,7 @@ sui client call --function water_plant_entry \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> $(date +%s)000 \  # Timestamp actual
 --gas-budget 10000000
+
 Revelar secreto:
 
 bash
@@ -66,6 +72,7 @@ sui client call --function reveal_secret_entry \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> \
 --gas-budget 10000000
+
 Transferir planta:
 
 bash
@@ -74,10 +81,12 @@ sui client call --function transfer_plant_entry \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> <RECIPIENT_ADDRESS> \
 --gas-budget 10000000
+
 Ver metadatos del módulo:
 
 bash
 sui client object <METADATA_OBJECT_ID>
+
 Pruebas antes de mainnet ✅
 Pruebas unitarias:
 
@@ -87,14 +96,14 @@ Pruebas en testnet:
 
 bash
 # Desplegar en testnet
-sui client publish --gas-budget 100000000
+sui client publish 
 
 # Crear planta de prueba
 sui client call --function create_plant_entry \
 --module garden \
 --package <PACKAGE_ID> \
 --args "Planta Test" 1 false \
---gas-budget 10000000
+
 
 # Verificar objeto creado
 sui client object <PLANT_ID>
@@ -108,6 +117,7 @@ sui client call --function create_plant_entry \
 --args "Simulación" 2 true \
 --gas-budget 10000000 \
 --dry-run
+
 Verificar eventos:
 
 bash
