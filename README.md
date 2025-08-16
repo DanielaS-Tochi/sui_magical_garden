@@ -1,8 +1,12 @@
-🌿 Magical Garden en Sui 
+# SUI Magical Garden 
 
-Un jardín mágico donde las plantas cobran vida con propiedades únicas basadas en elementos naturales. Cada planta evoluciona a través de diferentes etapas y revela mensajes secretos al florecer.
+## SUI Magical Garden is a Move-based smart contract for the Sui blockchain that allows users to create, nurture, and manage magical plants with elemental properties. Each plant has unique characteristics, growth stages, and special abilities that make collecting and caring for them an engaging experience.
+## El Jardín Mágico SUI es un contrato inteligente basado en Move para la blockchain de Sui que permite a los usuarios crear, cuidar y gestionar plantas mágicas con propiedades elementales. Cada planta tiene características únicas, etapas de crecimiento y habilidades especiales que hacen que coleccionarlas y cuidarlas sea una experiencia atractiva.
 
-Características principales ✨
+### Características principales ✨
+
+🌿 Crear y gestionar plantas mágicas
+
 🌈 Plantas con 6 tipos de magia elemental
 
 🌱 5 etapas de crecimiento realistas
@@ -15,7 +19,8 @@ Características principales ✨
 
 📡 Metadatos para Move Registry
 
-Pre-requisitos 📋
+### Pre-requisitos 📋
+
 Instalar Sui CLI
 
 Crear una wallet: sui client new-address ed25519
@@ -23,82 +28,98 @@ Crear una wallet: sui client new-address ed25519
 Obtener tokens de testnet: Sui Faucet
 
 Estructura del proyecto 📂
-text
+
 sui_magical_garden/
+├── README.md             # Documentación
 ├── sources/
 │   └── sui_magical_garden.move      # Código principal
 └── Move.toml             # Configuración
 
-Instalación y ejecución 🚀
+### Instalación y ejecución 🚀
+
 Clonar repositorio:
 
 bash
 git clone https://github.com/danielas-tochi/sui_magical_garden.git
+
 cd sui_magical_garden
 
-Compilar el proyecto:
+### Compilar el proyecto:
 
 bash
 sui move build
-Ejecutar pruebas:
+
+### Ejecutar pruebas:
 
 bash
 sui move test
 
-Comandos para probar desde terminal 🧪
+### Comandos para probar desde terminal 🧪
+
 Crear una planta:
 
 bash
+
 sui client call --function create_plant_entry \
 --module garden \
 --package <PACKAGE_ID> \
 --args "Mi Planta" 0 true \  # Nombre, tipo (0=Fuego), rareza
---gas-budget 10000000
+
 
 Regar una planta:
 
 bash
+
 sui client call --function water_plant_entry \
 --module garden \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> $(date +%s)000 \  # Timestamp actual
---gas-budget 10000000
+
 
 Revelar secreto:
 
 bash
+
 sui client call --function reveal_secret_entry \
 --module garden \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> \
---gas-budget 10000000
+
 
 Transferir planta:
 
 bash
+
 sui client call --function transfer_plant_entry \
 --module garden \
 --package <PACKAGE_ID> \
 --args <PLANT_ID> <RECIPIENT_ADDRESS> \
---gas-budget 10000000
+
 
 Ver metadatos del módulo:
 
 bash
+
 sui client object <METADATA_OBJECT_ID>
 
-Pruebas antes de mainnet ✅
+### Pruebas antes de mainnet ✅
+
 Pruebas unitarias:
 
 bash
+
 sui move test
-Pruebas en testnet:
+
+### Pruebas en testnet:
 
 bash
-# Desplegar en testnet
+### Configurar wallet y red
+### Desplegar en testnet
+
 sui client publish 
 
 # Crear planta de prueba
+
 sui client call --function create_plant_entry \
 --module garden \
 --package <PACKAGE_ID> \
@@ -106,10 +127,13 @@ sui client call --function create_plant_entry \
 
 
 # Verificar objeto creado
+
 sui client object <PLANT_ID>
-Pruebas de simulación:
+
+### Pruebas de simulación:
 
 bash
+
 # Simular creación de planta
 sui client call --function create_plant_entry \
 --module garden \
@@ -118,18 +142,30 @@ sui client call --function create_plant_entry \
 --gas-budget 10000000 \
 --dry-run
 
-Verificar eventos:
+### Verificar eventos:
 
 bash
-# Después de varias interacciones
+Después de varias interacciones
 sui client events --query "MoveModule:garden"
 Pruebas de carga:
 
 bash
-# Script para crear múltiples plantas
+### Script para crear múltiples plantas
 for i in {1..5}; do
   sui client call --function create_plant_entry \
   --module garden \
   --package <PACKAGE_ID> \
   --args "Planta $i" $((RANDOM % 6)) $((RANDOM % 2)) \
-  --gas-budget 10000000
+  
+
+**English:**
+- Built with Move language for Sui blockchain
+- Inspired by digital pet and farming game mechanics
+
+**Español:**
+- Construido con el lenguaje Move para la blockchain de Sui
+- Inspirado en mecánicas de mascotas digitales y juegos de cultivo
+
+---
+
+*Made with ❤️ for the Sui ecosystem / Hecho con ❤️ para el ecosistema Sui*
