@@ -96,7 +96,25 @@ module sui_magical_garden::garden {
                     plant.stage = Stage::Sprout;
                 }
             },
-            _ => {  // Comportamiento por defecto
+            MagicType::Water => {  // Plantas de agua necesitan más riego
+                if (plant.watered_count >= 5) {
+                    plant.stage = Stage::Flower;
+                } else if (plant.watered_count >= 3) {
+                    plant.stage = Stage::Bud;
+                } else if (plant.watered_count == 1) {
+                    plant.stage = Stage::Sprout;
+                }
+            },
+            MagicType::Light => {  // Plantas de luz crecen de forma equilibrada
+                if (plant.watered_count >= 4) {
+                    plant.stage = Stage::Flower;
+                } else if (plant.watered_count >= 2) {
+                    plant.stage = Stage::Bud;
+                } else if (plant.watered_count == 1) {
+                    plant.stage = Stage::Sprout;
+                }
+            },
+            _ => {  // Earth, Air, Shadow - comportamiento estándar
                 if (plant.watered_count >= 4) {
                     plant.stage = Stage::Flower;
                 } else if (plant.watered_count == 2 || plant.watered_count == 3) {
